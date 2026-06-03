@@ -1,0 +1,32 @@
+import { categories } from "@/functions/categories";
+import type { Post } from "@repo/db/data";
+import { toUrlPath } from "@repo/utils/url";
+import { SummaryItem } from "./SummaryItem";
+
+export function CategoryList({ posts }: { posts: Post[] }) {
+  const categoryItems = categories(posts);
+  const requiredCategories = ["Mongo", "DevOps"];
+
+  for (const name of requiredCategories) {
+    if (!categoryItems.some((item) => item.name === name)) {
+      categoryItems.push({ name, count: 0 });
+    }
+  }
+
+  categoryItems.sort((a, b) => a.name.localeCompare(b.name));
+
+  return (
+    <>
+      {categoryItems.map((item) => (
+        <SummaryItem
+          key={item.name}
+          count={item.count}
+          name={item.name}
+          isSelected={false}
+          link={`/category/${toUrlPath(item.name)}`}
+          title={`Category / ${item.name}`} 
+        />
+      ))}
+    </>
+  );
+}
