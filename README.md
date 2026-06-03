@@ -160,6 +160,19 @@ To run end to end tests you need to install headless browsers. Please run the fo
 ```
 pnpx playwright install
 ```
+Or run the following command in root directory
+```
+pnpm --filter @repo/playwright exec playwright install
+```
+
+As part of the initial setup, generate the database client, run migrations, build the database package, and seed the database.
+
+```
+pnpm --filter @repo/db db:generate
+pnpm --filter @repo/db db:migrate:dev
+pnpm --filter @repo/db build
+node -e "import('./packages/db/dist/seed.js').then((m) => m.seed())"
+```
 
 ## Environment
 
