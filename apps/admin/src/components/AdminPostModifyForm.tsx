@@ -14,6 +14,15 @@ type FormErrors = {
   imageUrl?: string;
 };
 
+const richContentClassName = //classes cuz tailwind doesn't support
+  "min-h-40 rounded border border-gray-300 px-3 py-2 text-sm " +
+  "[&_blockquote]:my-3 [&_blockquote]:border-l-4 [&_blockquote]:border-gray-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-gray-700 " +
+  "[&_h1]:mb-3 [&_h1]:mt-4 [&_h1]:text-3xl [&_h1]:font-bold " +
+  "[&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-2xl [&_h2]:font-bold " +
+  "[&_h3]:mb-2 [&_h3]:mt-3 [&_h3]:text-xl [&_h3]:font-semibold " +
+  "[&_li]:my-1 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 " +
+  "[&_p]:my-2 [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6";
+
 function validateUrl(value: string): boolean {
   try {
     const parsed = new URL(value);
@@ -312,7 +321,7 @@ export function AdminPostModifyForm({ post }: { post?: Post }) {
             {isPreviewOpen ? (
               <div
                 data-test-id="content-preview"
-                className="min-h-40 rounded border border-gray-300 px-3 py-2 text-sm"
+                className={richContentClassName}
                 dangerouslySetInnerHTML={{
                   __html: marked.parse(content) as string,
                 }}

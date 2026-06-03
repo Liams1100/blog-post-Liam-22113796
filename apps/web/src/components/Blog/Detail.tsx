@@ -3,6 +3,15 @@ import Link from "next/link";
 import { marked } from "marked";
 import { LikeButton } from "./LikeButton";
 
+const richContentClassName =
+  "max-w-none " +
+  "[&_blockquote]:my-3 [&_blockquote]:border-l-4 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-secondary " +
+  "[&_h1]:mb-3 [&_h1]:mt-4 [&_h1]:text-3xl [&_h1]:font-bold " +
+  "[&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-2xl [&_h2]:font-bold " +
+  "[&_h3]:mb-2 [&_h3]:mt-3 [&_h3]:text-xl [&_h3]:font-semibold " +
+  "[&_li]:my-1 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 " +
+  "[&_p]:my-2 [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6";
+
 export async function BlogDetail({ post }: { post: Post }) {
   const content = await marked.parse(post.content);
   const tags = post.tags
@@ -53,7 +62,7 @@ export async function BlogDetail({ post }: { post: Post }) {
 
           <div
             data-test-id="content-markdown"
-            className="prose max-w-none"
+            className={richContentClassName}
             dangerouslySetInnerHTML={{ __html: content }}
           />
         </div>
