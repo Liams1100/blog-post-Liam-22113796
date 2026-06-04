@@ -299,34 +299,41 @@ It also launches the unit and integration test framework Vitest's UI, similar to
 
 ## Project structure
 
-The project is monorepo with the following packages split into three categories:
+The project is a pnpm/Turborepo monorepo split into applications, shared packages, tests, and GitHub workflow configuration.
 
 **Applications**
 
 Contains the following web applications:
 
-- **apps/admin** - Admin Website
-- **apps/web** - Client website
+- **apps/admin** - Admin website for creating, editing, activating, and deactivating blog posts.
+- **apps/web** - Client website for browsing, searching, viewing, liking, and filtering blog posts.
 
 **Packages**
 
 Contains the following packages with shared code and configurations:
 
-- **packages/ui** - Library of UI elements shared between admin and client
-- **packages/utils** - Library of utility functions shared between other projects
-- **packages/db** - Library handling the database connection
-- **packages/eslint-config**, **packages/tailwind-config** and **packages/typescript-config** contain configuration files for build pipelines for this project
+- **packages/db** - Prisma schema, database client, migrations, and seed utilities.
+- **packages/env** - Shared environment variable validation for the web and admin apps.
+- **packages/ui** - Shared UI components used by the admin and client apps.
+- **packages/utils** - Shared utility functions used across the workspace.
+- **packages/eslint-config** - Shared ESLint configuration.
+- **packages/tailwind-config** - Shared Tailwind CSS configuration.
+- **packages/typescript-config** - Shared TypeScript configuration.
 
 **Tests**
 
 Contains the following test applications:
 
-- **tests/playwright-admin** - End to End tests for the admin application
-- **tests/playwright-web** - End to End tests for the client application
-- **tests/storybook** - Configured storybook instance for development and testing of React components in isolation
+- **tests/playwright** - Playwright end-to-end tests for the client, admin, backend, and custom feature requirements.
+- **tests/storybook** - Storybook instance for developing and testing React components in isolation.
+
+**GitHub Actions**
+
+Contains the automated grading workflow:
+
+- **.github/workflows/grading.yml** - Runs the autograding test suite in GitHub Actions using the test database, separate from the production database.
 
 ## Application Structure
 
-The client application comes with pre-defined router (only one route is missing for your learning).
-The client application also comes with pre defined structure of components and utilities for you to complete.
-Tha admin application is much more bare with most functionality AND structure needed to be completed by you.
+The client application comes with a predefined router and component/utility structure.
+The admin application is intentionally more bare and contains more functionality and structure for you to complete.
