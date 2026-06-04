@@ -139,9 +139,12 @@ Both create and update screens display the same UI, but the update screen preloa
 
 ## Prerequisites
 
-First, make sure that "pnpm" and "turbo" is installed in your computer. If not, please follow installation instructions for pnpm. If turbo is not installed, please install it using pnpm with the following command:
+Before installing the project, make sure you have:
 
-Then, run the following command to install turborepo.
+- Node.js 18 or newer
+- pnpm
+- Turborepo CLI
+- Access to a PostgreSQL database
 
 ```
 pnpm add -g turbo
@@ -149,23 +152,19 @@ pnpm add -g turbo
 
 ## Installing the project
 
-Once the pnpm is installed, in the root of the project install the packages
+Install dependencies from the root of the project:
 
 ```
 pnpm i
 ```
 
-To run end to end tests you need to install headless browsers. Please run the following command in the `tests/playwright-web` directory
+To run end to end tests, install the Playwright browsers:
 
-```
-pnpx playwright install
-```
-Or run the following command in root directory
 ```
 pnpm --filter @repo/playwright exec playwright install
 ```
 
-As part of the initial setup, generate the database client, run migrations, build the database package, and seed the database.
+As part of the initial setup, generate the Prisma client, run migrations, build the database package, and seed the database:
 
 ```
 pnpm --filter @repo/db db:generate
@@ -176,11 +175,26 @@ node -e "import('./packages/db/dist/seed.js').then((m) => m.seed())"
 
 ## Environment
 
-In all packages `apps/admin` and `packages/db` find `.env.example` files and copy them to `.env`. Set your environment variables accordingly!
+Copy the example environment files and fill in the values:
+
+```
+cp apps/admin/.env.example apps/admin/.env
+cp packages/db/.env.example packages/db/.env
+```
+
+Required environment variables:
+
+- `DATABASE_URL` - database connection string used by the app
+- `POSTGRES_PRISMA_URL` - PostgreSQL connection string used by Prisma migrations
+- `POSTGRES_URL_NON_POOLING` - direct PostgreSQL connection string used by Prisma
+- `PASSWORD` - admin login password
+- `JWT_SECRET` - secret used to sign and verify admin auth tokens
+
+For local development, these values can point to a local or hosted PostgreSQL database. Do not commit real secrets to the repository.
 
 ## Running the project
 
-To run the project, run the following command in the root directory of your project:
+Run both applications from the root of the project:
 
 ```
 turbo dev
@@ -191,6 +205,48 @@ This will run:
 - Client application at [http://localhost:3001](http://localhost:3001)
 - Admin application at [http://localhost:3002](http://localhost:3002)
 
+## Live deployment
+
+This project contains two Next.js applications:
+
+- Client app: `apps/web`
+- Admin app: `apps/admin`
+
+When deploying, create a separate deployment for each app and set the root directory to the matching app folder. Both apps also depend on the shared workspace packages in `packages/*`, so the deployment platform must install from the monorepo root using pnpm.
+
+Recommended deployment settings:
+
+- Install command: `pnpm install`
+- Build command for client: `pnpm --filter @repo/web build`
+- Build command for admin: `pnpm --filter @repo/admin build`
+- Output: Next.js default output
+- Node.js version: 18 or newer
+
+Before the first live deployment, create a production PostgreSQL database and add the production environment variables to the deployment platform:
+
+- `DATABASE_URL`
+- `POSTGRES_PRISMA_URL`
+- `POSTGRES_URL_NON_POOLING`
+- `PASSWORD`
+- `JWT_SECRET`
+
+Run database migrations against the production database before using the live site:
+
+```
+pnpm --filter @repo/db db:migrate:deploy
+```
+
+If the live database needs starter content, build and run the seed script once:
+
+```
+pnpm --filter @repo/db build
+node -e "import('./packages/db/dist/seed.js').then((m) => m.seed())"
+```
+
+Live URLs:
+
+- Client: https://blog-post-liam-22113796-web.vercel.app/
+- Admin: https://blog-post-liam-22113796-admin-wine.vercel.app/
 ## Running tests
 
 To run the tests please run, you have two options.
