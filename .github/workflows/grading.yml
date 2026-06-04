@@ -13,7 +13,9 @@ jobs:
       # in GitHub repo → Settings → Secrets → Actions
       E2E: true
       CI: true
-      DATABASE_URL: postgresql://neondb_owner:npg_Jf2kIniNsvB8@ep-ancient-resonance-a7r2zoy4-pooler.ap-southeast-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require
+      POSTGRES_PRISMA_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
+      POSTGRES_URL_NON_POOLING: ${{ secrets.POSTGRES_URL_NON_POOLING }}
+      DATABASE_URL: ${{ secrets.POSTGRES_PRISMA_URL }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       COURSE_ID: full-stack-development-comp3036-2026
       PASSWORD: 123
