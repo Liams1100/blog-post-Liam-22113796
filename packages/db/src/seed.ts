@@ -47,4 +47,7 @@ export async function seed() {
       });
     }
   }
+  await client.db.$executeRaw`
+    SELECT setval('"Post_id_seq"', COALESCE((SELECT MAX(id) FROM "Post"), 1), true);
+  `;
 }
