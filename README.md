@@ -251,6 +251,8 @@ Live URLs:
 
 To run the tests please run, you have two options.
 
+Tests that run through the GitHub Actions workflow in `.github/workflows/grading.yml` use a separate test database from the production database. This keeps production data maintained and prevents grading/test runs from modifying live production records.
+
 ### Running Tests in Console
 
 If you only wish to visualise the test results in console, please run the following command in the root of your project for the first part of the second assignment (i.e. Assignment 2.1):
