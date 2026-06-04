@@ -6,7 +6,7 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate --schema=packages/db/prisma/schema.prisma"
   },
   "devDependencies": {
     "playwright": "^1.50.0",
